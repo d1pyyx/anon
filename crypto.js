@@ -54,7 +54,7 @@ async function decryptMessage(key, ciphertextB64, ivB64) {
     );
     return new TextDecoder().decode(plainBuffer);
   } catch (e) {
-    return "[не удалось расшифровать]";
+    return "[decryption failed]";
   }
 }
 
