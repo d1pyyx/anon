@@ -21,6 +21,7 @@ const formMessage = document.getElementById("form-message");
 const inputMessage = document.getElementById("input-message");
 const currentNicknameLabel = document.getElementById("current-nickname");
 const btnLogout = document.getElementById("btn-logout");
+const btnClear = document.getElementById("btn-clear");
 const replyBanner = document.getElementById("reply-banner");
 const replyBannerText = document.getElementById("reply-banner-text");
 const btnCancelReply = document.getElementById("btn-cancel-reply");
@@ -61,22 +62,22 @@ formAuth.addEventListener("submit", async (e) => {
   e.preventDefault();
   showAuthError("");
   authSubmit.disabled = true;
-  authSubmit.textContent = "проверка...";
+  authSubmit.textContent = "checking...";
 
   try {
     const nickname = inputNickname.value.trim();
     const password = inputPassword.value;
 
     if (!nickname || nickname.length < 2 || nickname.length > 24) {
-      showAuthError("ник от 2 до 24 символов");
+      showAuthError("name must be 2-24 characters");
       return;
     }
     if (!/^[a-zA-Z0-9_\-\.]+$/.test(nickname)) {
-      showAuthError("ник: только латиница, цифры, _ - .");
+      showAuthError("name: letters, numbers, _ - . only");
       return;
     }
     if (!password) {
-      showAuthError("введите пароль");
+      showAuthError("enter password");
       return;
     }
 
@@ -84,7 +85,7 @@ formAuth.addEventListener("submit", async (e) => {
     const existingAttempt = await checkDeviceBlocked(deviceId);
 
     if (existingAttempt && existingAttempt.blocked) {
-      showAuthError("доступ заблокирован для этого устройства");
+      showAuthError("device blocked");
       return;
     }
 
@@ -93,9 +94,9 @@ formAuth.addEventListener("submit", async (e) => {
       const attempts = await registerFailedAttempt(deviceId, existingAttempt);
       const remaining = MAX_LOGIN_ATTEMPTS - attempts;
       if (remaining <= 0) {
-        showAuthError("неверный пароль. доступ заблокирован");
+        showAuthError("wrong password. device blocked");
       } else {
-        showAuthError(`неверный пароль. осталось попыток: ${remaining}`);
+        showAuthError(`wrong password. attempts left: ${remaining}`);
       }
       return;
     }
@@ -107,7 +108,7 @@ formAuth.addEventListener("submit", async (e) => {
       .maybeSingle();
 
     if (existingUser && existingUser.device_id !== deviceId) {
-      showAuthError("этот ник уже занят");
+      showAuthError("name already taken");
       return;
     }
 
@@ -117,7 +118,7 @@ formAuth.addEventListener("submit", async (e) => {
         device_id: deviceId,
       });
       if (insertError) {
-        showAuthError("не удалось зарегистрироваться, попробуйте другой ник");
+        showAuthError("registration failed, try another name");
         return;
       }
     }
@@ -128,10 +129,10 @@ formAuth.addEventListener("submit", async (e) => {
 
     enterChat();
   } catch (err) {
-    showAuthError("ошибка соединения");
+    showAuthError("connection error");
   } finally {
     authSubmit.disabled = false;
-    authSubmit.textContent = "войти";
+    authSubmit.textContent = "login";
   }
 });
 
@@ -188,7 +189,7 @@ function buildMessageNode(msg, plaintext, messagesById) {
     </div>
     ${replyHtml}
     <div class="message-body">${escapeHtml(plaintext)}</div>
-    <button class="message-reply-btn" data-id="${msg.id}">ответить</button>
+    <button class="message-reply-btn" data-id="${msg.id}">reply</button>
   `;
 
   wrapper.querySelector(".message-reply-btn").addEventListener("click", () => {
@@ -273,6 +274,10 @@ formMessage.addEventListener("submit", async (e) => {
     replyTarget = null;
     replyBanner.style.display = "none";
   }
+});
+
+btnClear.addEventListener("click", () => {
+  chatLog.innerHTML = "";
 });
 
 btnLogout.addEventListener("click", () => {
