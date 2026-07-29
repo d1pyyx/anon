@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,6 +124,29 @@ a {
 .chat-header-nick {
   color: #999;
   font-size: 12px;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #777;
+  padding: 5px 12px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+
+.btn-clear:hover {
+  border-color: #8a4a4a;
+  color: #c88;
 }
 
 .btn-logout {
@@ -292,7 +315,10 @@ a {
 <div id="screen-chat" class="screen">
   <div class="chat-header">
     <span class="chat-header-nick" id="current-nickname"></span>
-    <button class="btn-logout" id="btn-logout">выход</button>
+    <div class="chat-header-actions">
+      <button class="btn-clear" id="btn-clear">clear</button>
+      <button class="btn-logout" id="btn-logout">logout</button>
+    </div>
   </div>
 
   <div id="chat-log"></div>
@@ -303,8 +329,8 @@ a {
   </div>
 
   <form id="form-message">
-    <input type="text" id="input-message" placeholder="сообщение..." autocomplete="off">
-    <button type="submit" class="btn-send">отправить</button>
+    <input type="text" id="input-message" placeholder="message..." autocomplete="off">
+    <button type="submit" class="btn-send">send</button>
   </form>
 </div>
 
