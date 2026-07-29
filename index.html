@@ -53,34 +53,8 @@ a {
   max-width: 90vw;
 }
 
-.auth-title {
-  color: #d0d0d0;
-  font-size: 18px;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 4px;
-  text-transform: lowercase;
-}
-
-.auth-subtitle {
-  color: #555;
-  font-size: 11px;
-  text-align: center;
-  margin-bottom: 24px;
-  letter-spacing: 1px;
-}
-
 .field {
   margin-bottom: 14px;
-}
-
-.field label {
-  display: block;
-  color: #666;
-  font-size: 11px;
-  margin-bottom: 5px;
-  text-transform: lowercase;
-  letter-spacing: 1px;
 }
 
 .field input {
@@ -131,14 +105,6 @@ a {
   letter-spacing: 0.5px;
 }
 
-.auth-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #3a3a3a;
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-
 #screen-chat {
   display: none;
   flex-direction: column;
@@ -153,19 +119,6 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.chat-header-title {
-  color: #666;
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: lowercase;
-}
-
-.chat-header-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
 }
 
 .chat-header-nick {
@@ -323,31 +276,23 @@ a {
 
 <div id="screen-auth" class="screen">
   <div class="auth-box">
-    <div class="auth-title">anon</div>
-    <div class="auth-subtitle">private board // access required</div>
     <form id="form-auth">
       <div class="field">
-        <label for="input-nickname">nickname</label>
-        <input type="text" id="input-nickname" autocomplete="off" maxlength="24" required>
+        <input type="text" id="input-nickname" placeholder="name" autocomplete="off" maxlength="24" required>
       </div>
       <div class="field">
-        <label for="input-password">access password</label>
-        <input type="password" id="input-password" autocomplete="off" required>
+        <input type="password" id="input-password" placeholder="password" autocomplete="off" required>
       </div>
-      <button type="submit" class="auth-submit" id="auth-submit">войти</button>
+      <button type="submit" class="auth-submit" id="auth-submit">login</button>
       <div class="auth-error" id="auth-error"></div>
     </form>
-    <div class="auth-footer">2 attempts // then locked</div>
   </div>
 </div>
 
 <div id="screen-chat" class="screen">
   <div class="chat-header">
-    <div class="chat-header-title">anon // board</div>
-    <div class="chat-header-right">
-      <span class="chat-header-nick" id="current-nickname"></span>
-      <button class="btn-logout" id="btn-logout">выход</button>
-    </div>
+    <span class="chat-header-nick" id="current-nickname"></span>
+    <button class="btn-logout" id="btn-logout">выход</button>
   </div>
 
   <div id="chat-log"></div>
