@@ -107,20 +107,11 @@ formAuth.addEventListener("submit", async (e) => {
       .eq("nickname", nickname)
       .maybeSingle();
 
-    if (existingUser && existingUser.device_id !== deviceId) {
-      showAuthError("name already taken");
-      return;
-    }
-
     if (!existingUser) {
-      const { error: insertError } = await supabaseClient.from("users").insert({
+      await supabaseClient.from("users").insert({
         nickname,
         device_id: deviceId,
       });
-      if (insertError) {
-        showAuthError("registration failed, try another name");
-        return;
-      }
     }
 
     sessionKey = await deriveKeyFromPassword(password);
