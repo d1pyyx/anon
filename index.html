@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>anon</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: #0a0a0a;
+  color: #b8b8b8;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+::selection {
+  background: #333;
+  color: #eee;
+}
+
+a {
+  color: #999;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+}
+
+#screen-auth {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.auth-box {
+  border: 1px solid #2a2a2a;
+  background: #111;
+  padding: 32px 28px;
+  width: 320px;
+  max-width: 90vw;
+}
+
+.auth-title {
+  color: #d0d0d0;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 4px;
+  text-transform: lowercase;
+}
+
+.auth-subtitle {
+  color: #555;
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  color: #666;
+  font-size: 11px;
+  margin-bottom: 5px;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+}
+
+.field input {
+  width: 100%;
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  color: #c8c8c8;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: #4a4a4a;
+}
+
+.auth-submit {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ccc;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: lowercase;
+  margin-top: 6px;
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: #222;
+  border-color: #4a4a4a;
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.auth-error {
+  display: none;
+  color: #8a4a4a;
+  font-size: 11px;
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #3a3a3a;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+#screen-chat {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.chat-header {
+  border-bottom: 1px solid #222;
+  background: #0d0d0d;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header-title {
+  color: #666;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+}
+
+.chat-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.chat-header-nick {
+  color: #999;
+  font-size: 12px;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #777;
+  padding: 5px 12px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+
+.btn-logout:hover {
+  border-color: #555;
+  color: #aaa;
+}
+
+#chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.message {
+  border-bottom: 1px solid #181818;
+  padding: 10px 0;
+}
+
+.message-head {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.message-nick {
+  color: #8a8a8a;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.message-time {
+  color: #444;
+  font-size: 11px;
+}
+
+.message-reply-ref {
+  color: #4a5a4a;
+  font-size: 12px;
+  margin-bottom: 4px;
+  padding-left: 8px;
+  border-left: 2px solid #2a3a2a;
+}
+
+.message-body {
+  color: #bbb;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.message-reply-btn {
+  background: transparent;
+  border: none;
+  color: #444;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  margin-top: 5px;
+  padding: 0;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+}
+
+.message-reply-btn:hover {
+  color: #888;
+}
+
+.reply-banner {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: #131313;
+  border-top: 1px solid #222;
+  padding: 8px 16px;
+  color: #6a7a6a;
+  font-size: 12px;
+}
+
+.reply-banner button {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#form-message {
+  display: flex;
+  border-top: 1px solid #222;
+  background: #0d0d0d;
+}
+
+#input-message {
+  flex: 1;
+  background: #0a0a0a;
+  border: none;
+  color: #c8c8c8;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.btn-send {
+  background: #161616;
+  border: none;
+  border-left: 1px solid #222;
+  color: #888;
+  padding: 0 22px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+}
+
+.btn-send:hover {
+  color: #ccc;
+}
+
+#chat-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+#chat-log::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+#chat-log::-webkit-scrollbar-thumb {
+  background: #222;
+}
+</style>
+</head>
+<body>
+
+<div id="screen-auth" class="screen">
+  <div class="auth-box">
+    <div class="auth-title">anon</div>
+    <div class="auth-subtitle">private board // access required</div>
+    <form id="form-auth">
+      <div class="field">
+        <label for="input-nickname">nickname</label>
+        <input type="text" id="input-nickname" autocomplete="off" maxlength="24" required>
+      </div>
+      <div class="field">
+        <label for="input-password">access password</label>
+        <input type="password" id="input-password" autocomplete="off" required>
+      </div>
+      <button type="submit" class="auth-submit" id="auth-submit">войти</button>
+      <div class="auth-error" id="auth-error"></div>
+    </form>
+    <div class="auth-footer">2 attempts // then locked</div>
+  </div>
+</div>
+
+<div id="screen-chat" class="screen">
+  <div class="chat-header">
+    <div class="chat-header-title">anon // board</div>
+    <div class="chat-header-right">
+      <span class="chat-header-nick" id="current-nickname"></span>
+      <button class="btn-logout" id="btn-logout">выход</button>
+    </div>
+  </div>
+
+  <div id="chat-log"></div>
+
+  <div class="reply-banner" id="reply-banner">
+    <span id="reply-banner-text"></span>
+    <button id="btn-cancel-reply">×</button>
+  </div>
+
+  <form id="form-message">
+    <input type="text" id="input-message" placeholder="сообщение..." autocomplete="off">
+    <button type="submit" class="btn-send">отправить</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="crypto.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
